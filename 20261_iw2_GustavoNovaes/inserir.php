@@ -20,7 +20,7 @@
         echo "<td>" . htmlspecialchars($row['cor']) . "</td>";
         echo "<td>" . htmlspecialchars($row['tamanho']) . "</td>";
         echo "<td>";
-    echo "<button class='btn-editar btn btn-warning btn-sm mr-1' data-toggle='modal' data-target='#EditarCamiseta' data-id='" . htmlspecialchars($row['id']) . "' data-cor='" . htmlspecialchars($row['cor']) . "' data-tamanho='" . htmlspecialchars($row['tamanho']) . "'>Editar</button>";
+    echo "<button class='btn-editar btn btn-warning btn-sm mr-1' data-id='" . htmlspecialchars($row['id']) . "' data-cor='" . htmlspecialchars($row['cor']) . "' data-tamanho='" . htmlspecialchars($row['tamanho']) . "'>Editar</button>";
     echo "<button class='btn-deletar btn btn-danger btn-sm' data-id='" . htmlspecialchars($row['id']) . "'>Excluir</button>";
     echo "</td>";
         echo "</tr>";

@@ -4,20 +4,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['acao']) && $_POST['aca
     include 'conecta.php';
 
     $id = $_POST['id'];
+    $cor = $_POST['cor'];
+    $tamanho = $_POST['tamanho'];
 
     try {
-        $sql = "SELECT * FROM tb_camiseta WHERE id = :id";
+        $sql = "UPDATE tb_camiseta SET cor = :cor, tamanho = :tamanho WHERE id = :id";
         $stmt = $pdo->prepare($sql);
-
-        $edit = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        if ($edit) {
-            echo json_encode([
-                'cor' => $edit['cor'],
-                'tamanho' => $edit['tamanho'],
-            ]);
-            exit;
-        };
+        if ($stmt->execute([':cor' => $cor, ':tamanho' => $tamanho, ':id' => $id])) {
+            echo "Sucesso";
+        } else {
+            echo "Erro ao atualizar no banco de dados.";
+        }
+    } catch (PDOException $e) {
+        echo "Erro: " . $e->getMessage();
+    }
     exit;
 }
 ?>

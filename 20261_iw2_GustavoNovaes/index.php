@@ -16,83 +16,55 @@
     <script>
     $(document).ready(function() {
         
-$(document).on("click", ".btn-editar", function () {
-    var id = $(this).data("id");
-    
-    $("#editar_id").val(id);
-});
+        $(document).on("click", ".btn-editar", function() {
+            var id = $(this).data("id");
+            
+            $.ajax({
+                url: "consulta_edit.php",
+                type: "POST",
+                data: { id: id },
+                dataType: "json"
+            }).done(function(resposta) {
+                $("#editar_id").val(id);
+                $("#editar_cor").val(resposta.cor);
+                $("#editar_tamanho").val(resposta.tamanho);
+                
+                $("#EditarCamiseta").modal("show");
+            }).fail(function(jqXHR, textStatus) {
+                alert("Erro ao buscar dados: " + textStatus);
+            });
+        });
+        $('#formEditarCamiseta').on('submit', function(e) {
+            e.preventDefault(); 
+            
+            var id = $("#editar_id").val();
+            var cor = $("#editar_cor").val(); 
+            var tamanho = $("#editar_tamanho").val(); 
 
-$('#formEditarCamiseta').on('submit', function(e) {
-    e.preventDefault(); 
-    
-    var id = $("#editar_id").val();
-
-    $.ajax({
-        url: "atualiza.php", 
-        type: "POST", 
-        data: {
-            "id": id,
-        },
-        dataType: "json"
-        success: function(resposta) {
-            if (resposta.trim() === "Sucesso") { 
-                $('#EditarCamiseta').modal('hide'); 
-                location.reload(); 
-            } else {
-                alert("Erro ao atualizar: " + resposta);
-            }
-        },
-        error: function() {
-            alert("Erro ao conectar com o servidor.");
-        }
-    });
-});
-
-$(document).on("click", ".btn-editar", function () {
-    var id = $(this).data("id");
-    var cor = $(this).data("cor");
-    var tamanho = $(this).data("tamanho");
-
-    $("#editar_id").val(id);
-    $("#editar_cor").val(cor);
-    $("#editar_tamanho").val(tamanho);
-});
-
-
-$('#formEditarCamiseta').on('submit', function(e) {
-    e.preventDefault(); 
-    
-    var id = $("#editar_id").val();
-    var cor = $("#editar_cor").val(); 
-    var tamanho = $("#editar_tamanho").val(); 
-
-    $.ajax({
-        url: "atualiza.php", 
-        type: "POST", 
-        data: {
-            "acao": "editar",
-            "id": id,
-            "cor": cor, 
-            "tamanho": tamanho 
-        },
-        success: function(resposta) {
-            if (resposta.trim() === "Sucesso") { 
-                $('#EditarCamiseta').modal('hide'); 
-                location.reload(); 
-            } else {
-                alert("Erro : " + resposta);
-            }
-        },
-        error: function() {
-            alert("Erro ao conectar com o servidor.");
-        }
-    });
-});
-
-        })
+            $.ajax({
+                url: "atualiza.php", 
+                type: "POST", 
+                data: {
+                    "acao": "editar",
+                    "id": id,
+                    "cor": cor, 
+                    "tamanho": tamanho 
+                },
+                success: function(resposta) {
+                    if (resposta.trim() === "Sucesso") { 
+                        $('#EditarCamiseta').modal('hide'); 
+                        location.reload(); 
+                    } else {
+                        alert("Erro: " + resposta);
+                    }
+                },
+                error: function() {
+                    alert("Erro ao conectar com o servidor.");
+                }
+            });
+        });
         $(document).on("click", ".btn-deletar", function (e) {
             e.preventDefault();
-            
             var idCamisa = $(this).data("id"); 
 
             if(confirm("Apagar camisa " + idCamisa + "?")) { 
@@ -139,6 +111,9 @@ $('#formEditarCamiseta').on('submit', function(e) {
             });
         }); 
      
+    });
+    </script>
+    });
     </script>
 </head>
 <body>
@@ -217,9 +192,5 @@ $('#formEditarCamiseta').on('submit', function(e) {
         </div>
 
     </div> 
-</body>
-
-  
-
 </body>
 </html>
